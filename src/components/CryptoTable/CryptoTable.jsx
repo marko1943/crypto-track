@@ -12,7 +12,7 @@ class CryptoTable extends Component {
   };
 
   componentDidMount() {
-    this.getData();
+    this.getCryptoData();
   }
 
   sortByKey(array, key) {
@@ -23,28 +23,84 @@ class CryptoTable extends Component {
     });
   }
 
-  getData = () => {
+  getCryptoData = () => {
+    let localData = this.getLocalStorage();
+    let arr;
+
+    // We still wanna make API call everytime we run the app
+    // But we shoulnd't be updating local storage with it
+    // All other values do get updates
+    // But my_value, check if there are items in local storage first
+    // Use them if there are
+    // And set local storage values to default/0 if there are no
     new CoinMarketCapService().getTickerData().then(res => {
-      let arr = Object.values(res);
-      arr.map(element => {
-        element.my_value = 0;
-        element.allow_submit = false;
-        // Sort works on arrays and quotes object isn't an array
-        // so we push the price to array
-        // Thoughts - is lodash _sortBy safer solution?>
-        element.price = element.quotes.USD.price;
-      });
-
-      // And then sort it
-      arr = this.sortByKey(arr, 'price');
-
-      this.setState({ cryptoData: arr });
-      // just cause its fun
-      setTimeout(() => {
-        this.setState({ loading: false });
-      }, 200);
+      arr = Object.values(res);
+      if (localData && localData.length > 0) {
+        for (let i = 0; i < arr.length; i++) {
+          const element = arr[i];
+          element.my_value = localData[i].my_value;
+        }
+        arr = this.sortByKey(arr, 'price');
+        this.setState({ cryptoData: arr });
+      } else {
+        arr.map(element => {
+          element.my_value = 0;
+          element.allow_submit = false;
+          // Sort works on arrays and quotes object isn't an array
+          // so we push the price to array
+          element.price = element.quotes.USD.price;
+        });
+        arr = this.sortByKey(arr, 'price');
+        this.setState({ cryptoData: arr });
+      }
     }), err => console.log(err);
+    // timeout cause its fun
+    setTimeout(() => {
+      this.setState({ loading: false });
+    }, 200);
   };
+
+  // getData = () => {
+  //   let localData = this.getLocalStorage();
+  //   let arr;
+
+  //   if (localData && localData.length > 0) {
+  //     new CoinMarketCapService().getTickerData().then(res => {
+  //       arr = Object.values(res);
+  //       console.log('call local data');
+  //       for (let i = 0; i < arr.length; i++) {
+  //         const element = arr[i];
+  //         element.my_value = localData[i].my_value;
+  //       }
+  //       // And then sort it
+  //       arr = this.sortByKey(arr, 'price');
+  //       this.setState({ cryptoData: arr });
+  //     }), err => console.log(err);
+  //   } else {
+  //     new CoinMarketCapService().getTickerData().then(res => {
+  //       arr = Object.values(res);
+  //       console.log('call else');
+  //       arr.map(element => {
+  //         element.my_value = 0;
+  //         element.allow_submit = false;
+  //         // Sort works on arrays and quotes object isn't an array
+  //         // so we push the price to array
+  //         // Thoughts - is lodash _sortBy safer solution?>
+  //         element.price = element.quotes.USD.price;
+  //       });
+  //       // And then sort it
+  //       arr = this.sortByKey(arr, 'price');
+  //       this.setLocalStorage(arr);
+  //       this.setState({ cryptoData: arr });
+  //     }), err => console.log(err);
+  //   }
+
+  //   console.log(arr);
+  //   // just cause its fun
+  //   setTimeout(() => {
+  //     this.setState({ loading: false });
+  //   }, 200);
+  // };
 
   handleChange = (index, event) => {
     this.setState({ myAmount: event.target.value });
@@ -59,7 +115,18 @@ class CryptoTable extends Component {
     arr[index].my_value += Number(this.state.myAmount);
     arr[index].allow_submit = false;
     this.setState({ cryptoData: arr });
+    this.setLocalStorage(arr);
     event.target.reset();
+    this.getLocalStorage();
+  }
+
+  setLocalStorage(arr) {
+    localStorage.setItem('valueObject', JSON.stringify(arr));
+  }
+
+  getLocalStorage() {
+    let object = JSON.parse(localStorage.getItem('valueObject'));
+    return object;
   }
 
   render() {
@@ -91,7 +158,7 @@ class CryptoTable extends Component {
                   <td>
                     {data.quotes.USD.price}
                   </td>
-                  <td className={data.quotes.USD.percent_change_24h > 0 ? 'green' : 'red'}>
+                  <td className={data.quotes.USD.percent_change_24h >= 0 ? 'green' : 'red'}>
                     {data.quotes.USD.percent_change_24h}
                   </td>
                   <td className="input-row">
