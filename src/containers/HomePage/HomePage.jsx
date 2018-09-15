@@ -7,6 +7,7 @@ class HomePage extends Component {
   render() {
     return (
       <div className={styles.container}>
+        <h1>React Crypto app</h1>
         <CryptoTable />
       </div>
     );
