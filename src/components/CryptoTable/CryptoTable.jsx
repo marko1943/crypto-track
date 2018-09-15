@@ -60,48 +60,6 @@ class CryptoTable extends Component {
     }, 200);
   };
 
-  // getData = () => {
-  //   let localData = this.getLocalStorage();
-  //   let arr;
-
-  //   if (localData && localData.length > 0) {
-  //     new CoinMarketCapService().getTickerData().then(res => {
-  //       arr = Object.values(res);
-  //       console.log('call local data');
-  //       for (let i = 0; i < arr.length; i++) {
-  //         const element = arr[i];
-  //         element.my_value = localData[i].my_value;
-  //       }
-  //       // And then sort it
-  //       arr = this.sortByKey(arr, 'price');
-  //       this.setState({ cryptoData: arr });
-  //     }), err => console.log(err);
-  //   } else {
-  //     new CoinMarketCapService().getTickerData().then(res => {
-  //       arr = Object.values(res);
-  //       console.log('call else');
-  //       arr.map(element => {
-  //         element.my_value = 0;
-  //         element.allow_submit = false;
-  //         // Sort works on arrays and quotes object isn't an array
-  //         // so we push the price to array
-  //         // Thoughts - is lodash _sortBy safer solution?>
-  //         element.price = element.quotes.USD.price;
-  //       });
-  //       // And then sort it
-  //       arr = this.sortByKey(arr, 'price');
-  //       this.setLocalStorage(arr);
-  //       this.setState({ cryptoData: arr });
-  //     }), err => console.log(err);
-  //   }
-
-  //   console.log(arr);
-  //   // just cause its fun
-  //   setTimeout(() => {
-  //     this.setState({ loading: false });
-  //   }, 200);
-  // };
-
   handleChange = (index, event) => {
     this.setState({ myAmount: event.target.value });
     let arr = this.state.cryptoData;
