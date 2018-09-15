@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 
 import CoinMarketCapService from './../../services/CoinMarketCap';
 import styles from './CryptoTable.scss';
+import Spinner from '../Spinner/Spinner';
 
 class CryptoTable extends Component {
   state = {
+    loading: true,
     cryptoData: {},
-    myAmount: undefined,
-    loading: true
+    myAmount: undefined
   };
+
+  componentDidMount() {
+    this.getData();
+  }
 
   sortByKey(array, key) {
     return array.sort(function(a, b) {
@@ -57,18 +62,10 @@ class CryptoTable extends Component {
     event.target.reset();
   }
 
-  componentDidMount() {
-    this.getData();
-  }
   render() {
     let { cryptoData, loading } = this.state;
 
-    if (loading)
-      return (
-        <div className={styles.loading}>
-          <i className="fa fa-spinner fa-spin" />
-        </div>
-      );
+    if (loading) return <Spinner />;
 
     return (
       <div className={styles.container}>
