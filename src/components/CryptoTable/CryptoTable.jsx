@@ -123,6 +123,7 @@ class CryptoTable extends Component {
                     <form onSubmit={this.handleClick.bind(this, i)}>
                       <input
                         type="number"
+                        step="0.01"
                         value={this.state.myAmout}
                         onChange={this.handleChange.bind(this, i)}
                       />
