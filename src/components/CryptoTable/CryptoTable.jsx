@@ -6,7 +6,8 @@ import styles from './CryptoTable.scss';
 class CryptoTable extends Component {
   state = {
     cryptoData: {},
-    myAmount: undefined
+    myAmount: undefined,
+    loading: true
   };
 
   sortByKey(array, key) {
@@ -31,9 +32,12 @@ class CryptoTable extends Component {
 
       // And then sort it
       arr = this.sortByKey(arr, 'price');
-      console.log(arr);
 
       this.setState({ cryptoData: arr });
+      // just cause its fun
+      setTimeout(() => {
+        this.setState({ loading: false });
+      }, 200);
     }), err => console.log(err);
   };
 
@@ -57,7 +61,14 @@ class CryptoTable extends Component {
     this.getData();
   }
   render() {
-    let { cryptoData } = this.state;
+    let { cryptoData, loading } = this.state;
+
+    if (loading)
+      return (
+        <div className={styles.loading}>
+          <i className="fa fa-spinner fa-spin" />
+        </div>
+      );
 
     return (
       <div className={styles.container}>
