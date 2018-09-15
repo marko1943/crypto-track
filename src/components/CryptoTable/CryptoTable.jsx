@@ -9,26 +9,46 @@ class CryptoTable extends Component {
     myAmount: undefined
   };
 
+  sortByKey(array, key) {
+    return array.sort(function(a, b) {
+      var x = a[key];
+      var y = b[key];
+      return x < y ? 1 : x > y ? -1 : 0;
+    });
+  }
+
   getData = () => {
     new CoinMarketCapService().getTickerData().then(res => {
       let arr = Object.values(res);
       for (let i = 0; i < arr.length; i++) {
         arr[i].my_value = 0;
+        arr[i].allow_submit = false;
+        // Sort works on arrays and quotes object isn't an array
+        // so we push the price to array
+        // Thoughts - is lodash _sortBy safer solution?>
+        arr[i].price = arr[i].quotes.USD.price;
       }
+
+      // And then sort it
+      arr = this.sortByKey(arr, 'price');
+      console.log(arr);
 
       this.setState({ cryptoData: arr });
     }), err => console.log(err);
   };
 
-  handleChange = e => {
-    this.setState({ myAmount: e.target.value });
+  handleChange = (index, event) => {
+    this.setState({ myAmount: event.target.value });
+    let arr = this.state.cryptoData;
+    arr[index].allow_submit = true;
+    this.setState({ cryptoData: arr });
   };
 
-  handleClick(i, event) {
+  handleClick(index, event) {
     event.preventDefault();
     let arr = this.state.cryptoData;
-
-    arr[i].my_value += Number(this.state.myAmount);
+    arr[index].my_value += Number(this.state.myAmount);
+    arr[index].allow_submit = false;
     this.setState({ cryptoData: arr });
     event.target.reset();
   }
@@ -71,9 +91,9 @@ class CryptoTable extends Component {
                       <input
                         type="number"
                         value={this.state.myAmout}
-                        onChange={this.handleChange}
+                        onChange={this.handleChange.bind(this, i)}
                       />
-                      <button type="submit" disabled={!this.state.myAmount}>
+                      <button type="submit" disabled={!data.allow_submit}>
                         Submit
                       </button>
                     </form>
