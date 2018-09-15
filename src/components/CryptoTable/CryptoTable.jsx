@@ -26,14 +26,14 @@ class CryptoTable extends Component {
   getData = () => {
     new CoinMarketCapService().getTickerData().then(res => {
       let arr = Object.values(res);
-      for (let i = 0; i < arr.length; i++) {
-        arr[i].my_value = 0;
-        arr[i].allow_submit = false;
+      arr.map(element => {
+        element.my_value = 0;
+        element.allow_submit = false;
         // Sort works on arrays and quotes object isn't an array
         // so we push the price to array
         // Thoughts - is lodash _sortBy safer solution?>
-        arr[i].price = arr[i].quotes.USD.price;
-      }
+        element.price = element.quotes.USD.price;
+      });
 
       // And then sort it
       arr = this.sortByKey(arr, 'price');
