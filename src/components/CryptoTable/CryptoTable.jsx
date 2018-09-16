@@ -2,7 +2,7 @@
  * @Author: Marko Stojiljković 
  * @Date: 2018-09-16 18:17:06 
  * @Last Modified by: Marko Stojiljković
- * @Last Modified time: 2018-09-16 18:40:53
+ * @Last Modified time: 2018-09-16 18:41:50
  */
 
 import React, { Component } from 'react';
@@ -60,7 +60,7 @@ class CryptoTable extends Component {
   handleChange = (index, event) => {
     this.setState({ myAmount: event.target.value });
     let arr = this.state.cryptoData;
-    if (event.target.value.length > 0) {
+    if (event.target.value.length > 0 && event.target.value > 0) {
       arr[index].allow_submit = true;
       // Make submiting false if user clears the input field after he entered value
     } else {
