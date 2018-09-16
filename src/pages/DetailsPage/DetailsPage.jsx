@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import CoinMarketCapService from './../../services/CoinMarketCap';
+import { Link } from 'react-router-dom';
+import Spinner from './../../components/Spinner/Spinner';
+import moment from 'moment';
+
 import styles from './DetailsPages.scss';
 
 export default class DetailsPage extends Component {
   state = {
-    data: {}
+    data: {},
+    loading: true
   };
   getData(id) {
     new CoinMarketCapService().getSingleTickerData(id).then(res => {
-      console.log(res);
-      this.setState({ data: res });
-    }), err => console.log(err);
+      this.setState({ data: res, loading: false });
+    }), err => {
+      console.log(err);
+      this.setState({ loading: false });
+    };
   }
 
   componentDidMount() {
@@ -18,8 +25,11 @@ export default class DetailsPage extends Component {
   }
 
   render() {
-    let { data } = this.state;
-    let date = new Date(data.last_updated * 1000).toString();
+    let { data, loading } = this.state;
+
+    if (loading) {
+      return <Spinner />;
+    }
 
     return (
       <div className={styles.container}>
@@ -37,15 +47,35 @@ export default class DetailsPage extends Component {
             <p>
               Max Supply: {data.max_supply}
             </p>
+            <p>
+              Total Supply: {data.total_supply}
+            </p>
             {data.last_updated &&
               <p>
-                Last updated: {date}
+                Last updated: {moment.unix(data.last_updated).format('MMM DD YYYY')}
               </p>}
             {data.quotes &&
-              <p>
-                Price: {data.quotes.USD.price}
-              </p>}
+              <div>
+                <p>
+                  Price: {data.quotes.USD.price}
+                </p>
+                <p>
+                  Volume last 24h: {data.quotes.USD.volume_24h}
+                </p>
+                <p>
+                  Percent change last 24h: {data.quotes.USD.percent_change_24h}
+                </p>
+                <p>
+                  Volume last hour: {data.quotes.USD.percent_change_1h}
+                </p>
+                <p>
+                  Market cap: {data.quotes.USD.market_cap}{' '}
+                </p>
+              </div>}
           </div>}
+        <div className="back">
+          <Link to={'/'}>back to table</Link>
+        </div>
       </div>
     );
   }
