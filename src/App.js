@@ -1,3 +1,10 @@
+/*
+ * @Author: Marko Stojiljković 
+ * @Date: 2018-09-16 18:17:16 
+ * @Last Modified by:   Marko Stojiljković 
+ * @Last Modified time: 2018-09-16 18:17:16 
+ */
+
 import React, { Component } from 'react';
 
 import { BrowserRouter, Switch } from 'react-router-dom';

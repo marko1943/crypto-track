@@ -1,3 +1,10 @@
+/*
+ * @Author: Marko Stojiljković 
+ * @Date: 2018-09-16 18:16:45 
+ * @Last Modified by:   Marko Stojiljković 
+ * @Last Modified time: 2018-09-16 18:16:45 
+ */
+
 import React, { Component } from 'react';
 import CoinMarketCapService from './../../services/CoinMarketCap';
 import { Link } from 'react-router-dom';

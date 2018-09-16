@@ -1,3 +1,11 @@
+/*
+ * @Author: Marko Stojiljković 
+ * @Date: 2018-09-16 18:16:56 
+ * @Last Modified by:   Marko Stojiljković 
+ * @Last Modified time: 2018-09-16 18:16:56 
+ */
+
+
 import React, { Component } from 'react';
 import styles from './HomePage.scss';
 

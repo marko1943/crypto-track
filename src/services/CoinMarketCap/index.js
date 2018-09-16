@@ -2,7 +2,7 @@
  * @Author: Marko Stojiljković 
  * @Date: 2018-09-15 13:33:43 
  * @Last Modified by: Marko Stojiljković
- * @Last Modified time: 2018-09-16 15:45:26
+ * @Last Modified time: 2018-09-16 18:12:23
  */
 
 import axios from 'axios';
@@ -12,7 +12,7 @@ export default class CoinMarketCapService {
   // v2/ticker/?limit=10
 
   getTickerData() {
-    let url = API_URL + 'v2/ticker/?limit=10';
+    let url = API_URL + 'v2/ticker/?limit=50';
     return axios
       .get(url)
       .then(response => {
