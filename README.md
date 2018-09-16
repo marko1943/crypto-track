@@ -7,9 +7,9 @@ ___
  - **config** - Contains webpack config for building the app. Currently used file is `webpack.config.dev.js` since we're on development.
   - **src** - Contains all the code inside of folders:
     - **components** - Components used inside of pages/containers. Since this is a small project it's enough to have single folder for this.
-    - **constants** - Contains `API_URL` constant that is used to for services.
+    - **constants** - Contains `API_URL` constant that is used for services.
     - **pages** - This are the main pages/containers. Contains *HomePage* and *DetailsPage*
-    - **services** - contains code that calls web services to grab data from API
+    - **services** - Contains code that calls web services to grab data from API
  
 ### How to run:
 - clone the repo, `git clone https://github.com/marko1943/crypto-track`
