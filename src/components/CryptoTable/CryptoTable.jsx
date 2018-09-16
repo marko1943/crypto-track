@@ -1,10 +1,9 @@
 /*
  * @Author: Marko Stojiljković 
  * @Date: 2018-09-16 18:17:06 
- * @Last Modified by:   Marko Stojiljković 
- * @Last Modified time: 2018-09-16 18:17:06 
+ * @Last Modified by: Marko Stojiljković
+ * @Last Modified time: 2018-09-16 18:40:53
  */
-
 
 import React, { Component } from 'react';
 
@@ -36,7 +35,8 @@ class CryptoTable extends Component {
     // Use them if there are
     // And set local storage values to default/0 if there are no
     new CoinMarketCapService().getTickerData().then(res => {
-      arr = Object.values(res);
+      // Sort array by USD price, descending
+      arr = Object.values(res).sort((a, b) => b.quotes.USD.price - a.quotes.USD.price);
       if (localData && localData.length > 0) {
         for (let i = 0; i < arr.length; i++) {
           const element = arr[i];
