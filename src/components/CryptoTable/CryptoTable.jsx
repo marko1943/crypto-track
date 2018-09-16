@@ -15,14 +15,6 @@ class CryptoTable extends Component {
     this.getCryptoData();
   }
 
-  sortByKey(array, key) {
-    return array.sort(function(a, b) {
-      var x = a[key];
-      var y = b[key];
-      return x < y ? 1 : x > y ? -1 : 0;
-    });
-  }
-
   getCryptoData = () => {
     let localData = this.getLocalStorage();
     let arr;
@@ -40,19 +32,14 @@ class CryptoTable extends Component {
           const element = arr[i];
           element.my_value = localData[i].my_value;
         }
-        arr = this.sortByKey(arr, 'price');
-        this.setState({ cryptoData: arr });
       } else {
         arr.map(element => {
           element.my_value = 0;
           element.allow_submit = false;
-          // Sort works on arrays and quotes object isn't an array
-          // so we push the price to array
-          element.price = element.quotes.USD.price;
         });
-        arr = this.sortByKey(arr, 'price');
-        this.setState({ cryptoData: arr });
       }
+      this.setLocalStorage(arr);
+      this.setState({ cryptoData: arr });
     }), err => console.log(err);
     // timeout cause its fun
     setTimeout(() => {
