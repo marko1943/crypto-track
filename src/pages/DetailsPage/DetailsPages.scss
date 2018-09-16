@@ -1,1 +1,6 @@
-:local(.container) {}
+:local(.container) {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 2rem;
+}

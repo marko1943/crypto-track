@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import CoinMarketCapService from './../../services/CoinMarketCap';
 import styles from './CryptoTable.scss';
 import Spinner from '../Spinner/Spinner';
@@ -20,7 +22,7 @@ class CryptoTable extends Component {
     let arr;
 
     // We still wanna make API call everytime we run the app
-    // But we shoulnd't be updating local storage with it
+    // But we shouldn't be updating local storage with it
     // All other values do get updates
     // But my_value, check if there are items in local storage first
     // Use them if there are
@@ -67,7 +69,6 @@ class CryptoTable extends Component {
     this.setState({ cryptoData: arr });
     this.setLocalStorage(arr);
     event.target.reset();
-    this.getLocalStorage();
   }
 
   setLocalStorage(arr) {
@@ -99,8 +100,10 @@ class CryptoTable extends Component {
             {cryptoData.length > 0 &&
               cryptoData.map((data, i) =>
                 <tr key={data.name}>
-                  <td>
-                    {data.name}
+                  <td className="name">
+                    <Link to={'/details/' + data.id}>
+                      {data.name}
+                    </Link>
                   </td>
                   <td>
                     {data.symbol}
