@@ -63,7 +63,12 @@ class CryptoTable extends Component {
   handleChange = (index, event) => {
     this.setState({ myAmount: event.target.value });
     let arr = this.state.cryptoData;
-    arr[index].allow_submit = true;
+    if (event.target.value.length > 0) {
+      arr[index].allow_submit = true;
+      // Make submiting false if user clears the input field after he entered value
+    } else {
+      arr[index].allow_submit = false;
+    }
     this.setState({ cryptoData: arr });
   };
 
