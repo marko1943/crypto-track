@@ -2,7 +2,7 @@
  * @Author: Marko Stojiljković 
  * @Date: 2018-09-16 18:17:06 
  * @Last Modified by: Marko Stojiljković
- * @Last Modified time: 2018-09-16 18:41:50
+ * @Last Modified time: 2018-09-16 18:53:51
  */
 
 import React, { Component } from 'react';
@@ -22,6 +22,14 @@ class CryptoTable extends Component {
 
   componentDidMount() {
     this.getCryptoData();
+    // Call API on every 60 seconds
+    this.interval = setInterval(() => {
+      this.getCryptoData();
+    }, 60000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   getCryptoData = () => {
